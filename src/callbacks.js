@@ -7,7 +7,16 @@
 // iterator function over each item in the input collection.
 
 var each = function(collection, iterator) {
-  // Write your code here
+  if (Array.isArray(collection)) {
+  	for (var i = 0; i < collection.length; i++) {
+  		var index = i;
+  		iterator(collection[i], index, collection)
+  	}
+  } else if (typeof collection === 'object') {
+  	for (var key in collection) {
+  		iterator(collection[key], key, collection);
+  	}
+  }
 };
 
 // ===================== FILTER =====================
@@ -17,7 +26,13 @@ var each = function(collection, iterator) {
 // Requirement: Implement your .each() function
 
 var filter = function(collection, test) {
-  // Write your code here
+  var arr = [];
+  each(collection, function (element) {
+  	if (test(element)) {
+  		arr.push(element);
+  	}
+  });
+  return arr;
 };
 
 // ===================== MAP =====================
@@ -31,8 +46,11 @@ var filter = function(collection, test) {
 // Requirement: Implement your .each() function
 
 var map = function(collection, iterator) {
-
-  // Write your code here
+ var arr = [];
+ each(collection, function (element) {
+ 	arr.push(iterator(element));
+ })
+ return arr;
 };
 
 // ===================== REDUCE =====================
@@ -61,5 +79,14 @@ var map = function(collection, iterator) {
 // Requirement: Implement your .each() function
 
 var reduce = function(collection, iterator, accumulator) {
-  // Write your code here
+  var acc = accumulator;
+
+  each(collection, function(item) {
+  	if (acc === undefined) {
+  		acc = item;
+  	} else {
+  		acc = iterator(acc, item);
+  	}
+  })
+  return acc;
 };
